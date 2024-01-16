@@ -1,0 +1,73 @@
+﻿@model _19T1021111.Web.Models.EmployeeSearchOutput
+@{
+    Layout = null;
+    int page = Model.Page;
+    int previousPage = page <= 1 ? 1 : page - 1;
+    int nextPage = page + 1;
+}
+<p>Có <strong>@Model.RowCount</strong> nhân viên trong tổng số <strong>@Model.PageCount</strong> trang</p>
+<div class="">
+    <div class="row">
+        @foreach (var item in Model.Data)
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div style="margin:12px 0px; display: flex; flex-direction: column; border: 2px solid #ccc; padding: 1em; border-radius: 6px">
+
+                    <div style="flex: 2; display: flex;justify-content:space-around; flex-direction: row;" class="top-infor">
+                        <div class="avatar">
+                            @if (item.Photo.Contains("http"))
+                            {
+                                <img style="width:146px;height:154px;border-radius:6px" src="@item.Photo" alt="avatar" />
+                            }
+                            else
+                            { <img style="width:146px;height:154px;border-radius:6px" src="~/Images/@item.Photo" alt="avatar" />}
+                        </div>
+                        <div style="display:flex;flex-direction:column">
+                            <div class="text-right">
+                                <a href="~/Employee/Edit/@item.EmployeeID" class="btn btn-sm bg-success" title="Sửa"><i class="glyphicon glyphicon-edit"></i></a>
+                                <a href="~/Employee/Delete/@item.EmployeeID" class="btn btn-sm bg-danger" title="Xoá"><i class="glyphicon glyphicon-trash"></i></a>
+                            </div>
+                            <div>
+                                <textarea disabled style="width :200px;max-width:200px; max-height:108px; height:108px;margin-top:12px" id="details" name="w3review" rows="4" cols="50">@item.Notes </textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex;flex-direction:row;flex:1;" class="bottom-infor">
+
+                        <div style="margin-top:12px" class="infor">
+
+                            <p>Họ và Tên: @item.LastName @item.FirstName</p>
+                            <div>
+                                <p>Ngày sinh: @Convert.ToDateTime(item.BirthDate).ToString("dd/MM/yyyy")</p>
+                            </div>
+                            <div>
+                                <p>Email: @item.Email </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+<div class="text-center">
+    <ul class="pagination">
+        <li class="previous"><a href="javascript:;" onclick="doSearch(@previousPage)"><i class="fa fa-backward"></i></a></li>
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            if (i == Model.Page)
+            {
+                <li class="active"><a href="#">@i</a></li>
+            }
+            else
+            {
+                <li><a fref="javascript:;" onclick="doSearch(@i)">@i</a></li>
+            }
+        }
+        <li class="next"><a href="javascript:;" onclick="doSearch(@nextPage)"><i class="fa fa-forward"></i></a></li>
+    </ul>
+</div>
